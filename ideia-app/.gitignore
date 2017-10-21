@@ -1,0 +1,6 @@
+platforms/
+node_modules/
+package-lock.json
+*.js
+!hooks/!	
+.vscode/
