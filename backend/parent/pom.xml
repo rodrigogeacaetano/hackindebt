@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<!--<description>Jar Configurator of Spring Boot for Enterprise apps</description> -->
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>pom</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<groupId>com.hack.debit</groupId>
+	<artifactId>parent</artifactId>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!--SPRING BOOT -->
+		<java.version>1.8</java.version>
+		<application.properties>/application.properties</application.properties>
+		<fabric8.maven.plugin.fabric8.version>3.2.28</fabric8.maven.plugin.fabric8.version>
+		<versions.maven.plugin.version>2.4</versions.maven.plugin.version>
+	</properties>
+
+	<modules>
+		<module>../account-service</module>
+		<module>../core</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>1.4.3.RELEASE</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.17</version>
+			</dependency>
+			<!-- JUnit -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.12</version>
+				<scope>test</scope>
+			</dependency>
+			<!-- Mockito -->
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>1.10.19</version>
+				<scope>test</scope>
+			</dependency>
+			<!-- Json Path errors -->
+			<dependency>
+				<groupId>com.jayway.jsonpath</groupId>
+				<artifactId>json-path</artifactId>
+				<version>2.2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.5</version>
+			</dependency>
+			<dependency>
+				<groupId>org.quartz-scheduler</groupId>
+				<artifactId>quartz</artifactId>
+				<version>2.2.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-test</artifactId>
+				<version>1.4.3.RELEASE</version>
+			</dependency>
+			<!--hibernate-validator-annotation-processor -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>5.2.4.Final</version>
+			</dependency>
+			<!-- Power Mockito for tests -->
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-module-junit4</artifactId>
+				<version>1.6.6</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-api-mockito</artifactId>
+				<version>1.6.6</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.thoughtworks.xstream</groupId>
+				<artifactId>xstream</artifactId>
+				<version>1.4.9</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.axet</groupId>
+				<artifactId>threads</artifactId>
+				<version>0.0.14</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jsoup</groupId>
+				<artifactId>jsoup</artifactId>
+				<version>1.10.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.axet</groupId>
+				<artifactId>vget</artifactId>
+				<version>1.1.23</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.4</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<version>3.5.1</version>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<configuration>
+						<mainClass>${start-class}</mainClass>
+						<layout>ZIP</layout>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.0.2</version>
+				</plugin>
+
+				<!--SONAR -->
+				<plugin>
+					<groupId>org.sonarsource.scanner.maven</groupId>
+					<artifactId>sonar-maven-plugin</artifactId>
+					<version>3.3.0.603</version>
+				</plugin>
+
+				<!-- Properties plugin
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>properties-maven-plugin</artifactId>
+					<version>1.0.0</version>
+					<executions>
+						<execution>
+							<phase>initialize</phase>
+							<goals>
+								<goal>read-project-properties</goal>
+							</goals>
+							<configuration>
+								<files>
+									<file>${project.build.resources[0].directory}${swagger.directory}${swagger.definition.properties}</file>
+									<file>${project.build.resources[0].directory}${application.properties}</file>
+								</files>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				-->
+				<!-- Generate a jar with test classes -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.0.2</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>test-jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>io.fabric8</groupId>
+					<artifactId>fabric8-maven-plugin</artifactId>
+					<version>${fabric8.maven.plugin.fabric8.version}</version>
+					<configuration>
+						<logDate>default</logDate>
+						<autoPull>true</autoPull>
+						<images>
+							<!-- Image holding the artifact of this build -->
+							<image>
+								<!-- Alias name which can used for linking containers during runtime -->
+								<alias>service</alias>
+								<name>com.hack.debit/${project.artifactId}:${project.version}</name>
+								<!-- ....................................... -->
+								<!-- Build configuration for creating images -->
+								<!-- ....................................... -->
+								<build>
+									<from>java:8-jdk-alpine</from>
+									<tags>
+										<tag>${project.version}</tag>
+										<tag>snapshot</tag>
+									</tags>
+									<!--<runCmds>
+										<run>echo "UTC" &gt; /etc/timezone</run>
+									</runCmds>-->
+									<!-- Expose ports -->
+									<ports>
+										<port>8080</port>
+									</ports>
+									<volumes>
+										<volume>/config</volume>
+									</volumes>
+									<!-- Default command for the build image -->
+									<cmd>java -jar /maven/${project.build.finalName}.jar</cmd>
+									<assembly>
+										<descriptorRef>artifact</descriptorRef>
+									</assembly>
+								</build>
+							</image>
+						</images>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>${versions.maven.plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>com.amashchenko.maven.plugin</groupId>
+				<artifactId>gitflow-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>${versions.maven.plugin.version}</version>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>
+
