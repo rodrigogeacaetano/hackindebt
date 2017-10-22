@@ -1,16 +1,11 @@
 package com.hack.debit.model;
 
-import static org.springframework.util.StringUtils.isEmpty;
-
-import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hack.debit.jpa.JPAEntity;
 
 /**
@@ -36,10 +31,11 @@ public class User extends JPAEntity {
 
 	@Column
 	private String password;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column
 	private AuthenticationTypeEnum authenticationType;
+
 
 	public AuthenticationTypeEnum getAuthenticationType() {
 		return authenticationType;
@@ -66,9 +62,6 @@ public class User extends JPAEntity {
 	}
 
 	public String getExternalId() {
-		if (isEmpty(this.externalId) && !(isEmpty(this.email) && isEmpty(password))) {
-			this.externalId = UUID.randomUUID().toString();
-		}
 		return externalId;
 	}
 
@@ -84,7 +77,6 @@ public class User extends JPAEntity {
 		this.nationalId = nationalId;
 	}
 
-	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}

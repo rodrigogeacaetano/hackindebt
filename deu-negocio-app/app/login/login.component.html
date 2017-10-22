@@ -1,0 +1,20 @@
+<ActionBar class="action-bar">
+    <Label class="action-bar-title" text="Login"></Label>
+</ActionBar>
+<ScrollView>
+    <StackLayout class="page p-t-15" horizontalAlignment="center" verticalAlignment="center">
+        <StackLayout orientation="horizontal">
+            <Label class="m-t-15 m-b-10 m-l-15 m-r-15" text="ENTRAR COM:" fontFamily="work-sans"></Label>
+            <Button class="btn btn-outline m-t-10 m-b-10 m-l-15 m-r-15" (tap)="onLoginWithFacebookButtonTap()" text="F" fontFamily="work-sans">
+            </Button>
+            <Button class="btn btn-outline m-t-10 m-b-10 m-l-15 m-r-15" (tap)="onLoginWithGoogleButtonTap()" text="G" fontFamily="work-sans"></Button>
+        </StackLayout>
+        <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" hint="E-MAIL:" keyboardType="email" autocorrect="false" autocapitalization="none"
+            [(ngModel)]='email' fontFamily="work-sans"></TextField>
+        <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" hint="SENHA:" secure="true" autocorrect="false" autocapitalization="none"
+            [(ngModel)]='password' fontFamily="work-sans"></TextField>
+        <Button class="btn btn-primary" text="ENTRAR" (tap)="onSigninButtonTap()" fontFamily="work-sans"></Button>
+        <Label class="m-t-10 m-b-10 m-l-15 m-r-15" text="ESQUECI MINHA SENHA." (tap)="onForgotPasswordTap()" fontFamily="work-sans"></Label>
+        <Button class="link btn-outline" text="CADASTRE-SE" [nsRouterLink]="['/register']" fontFamily="work-sans"></Button>
+    </StackLayout>
+</ScrollView>
