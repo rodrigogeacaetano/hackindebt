@@ -15,4 +15,5 @@ public interface DebitRepository extends PagingAndSortingRepository<Debit, Long>
 
     List<Debit> findByUserId(@Param("userId") String userId);
 
+    List<Debit> findAllByUserId(@Param("userId") String userId);
 }
