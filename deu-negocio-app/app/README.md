@@ -1,4 +1,4 @@
-# Tegnologias envolvidas
+# Tecnologias
  * Angular 4;
  * Nativescript;
  * CSS;
