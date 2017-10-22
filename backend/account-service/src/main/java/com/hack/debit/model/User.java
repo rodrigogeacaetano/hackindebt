@@ -1,61 +1,95 @@
 package com.hack.debit.model;
 
-import com.hack.debit.jpa.JPAEntity;
+import static org.springframework.util.StringUtils.isEmpty;
+
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hack.debit.jpa.JPAEntity;
 
 /**
  * Created by arnaldo on 21/10/2017.
  */
 @Entity
-@Table(name="account_user")
-public class User extends JPAEntity{
+@Table(name = "account_user")
+public class User extends JPAEntity {
 
-    @Column(nullable = false)
-    private String name;
+	private static final long serialVersionUID = -5992095789117531096L;
 
-    @Column(unique = true, nullable = false)
-    private String email;
+	@Column(nullable = false)
+	private String name;
 
-    @Column(unique = true, nullable = false)
-    private String nationalId;
+	@Column(unique = true, nullable = false)
+	private String email;
 
-    private String externalId;
+	@Column(unique = true, nullable = false)
+	private String nationalId;
 
-    private String password;
+	@Column(unique = true)
+	private String externalId;
 
-    public String getName() {
-        return name;
-    }
+	@Column
+	private String password;
+	
+	@Enumerated(EnumType.STRING)
+	@Column
+	private AuthenticationTypeEnum authenticationType;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public AuthenticationTypeEnum getAuthenticationType() {
+		return authenticationType;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public void setAuthenticationType(AuthenticationTypeEnum authenticationType) {
+		this.authenticationType = authenticationType;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getExternalId() {
-        return externalId;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setExternalId(String externalId) {
-        this.externalId = externalId;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public String getNationalId() {
-        return nationalId;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setNationalId(String nationalId) {
-        this.nationalId = nationalId;
-    }
+	public String getExternalId() {
+		if (isEmpty(this.externalId) && !(isEmpty(this.email) && isEmpty(password))) {
+			this.externalId = UUID.randomUUID().toString();
+		}
+		return externalId;
+	}
+
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
+	}
+
+	public String getNationalId() {
+		return nationalId;
+	}
+
+	public void setNationalId(String nationalId) {
+		this.nationalId = nationalId;
+	}
+
+	@JsonIgnore
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }
