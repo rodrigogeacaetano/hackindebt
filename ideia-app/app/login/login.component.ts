@@ -1,53 +1,78 @@
 import { Component, OnInit } from "@angular/core";
+import { LoginService } from "./login.service";
+import { RouterExtensions } from "nativescript-angular/router";
+import { User } from "../model/user";
 
-/* ***********************************************************
-* Before you can navigate to this page from your app, you need to reference this page's module in the
-* global app router module. Add the following object to the global array of routes:
-* { path: "login", loadChildren: "./login/login.module#LoginModule" }
-* Note that this simply points the path to the page module file. If you move the page, you need to update the route too.
-*************************************************************/
+import firebase = require("nativescript-plugin-firebase");
 
 @Component({
-    selector: "Login",
-    moduleId: module.id,
-    templateUrl: "./login.component.html"
+  selector: "Login",
+  moduleId: module.id,
+  templateUrl: "./login.component.html"
 })
 export class LoginComponent implements OnInit {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
+  user: User;
 
-    constructor() {
-        /* ***********************************************************
-        * Use the constructor to inject app services that you need in this component.
-        *************************************************************/
+  constructor(
+    private loginService: LoginService,
+    private routerExtensions: RouterExtensions
+  ) {}
+
+  public ngOnInit(): void {
+    if (this.loginService.isLoginAuthenticate()) {
+      this.routerExtensions.navigate(["/home"], { clearHistory: true });
     }
+  }
 
-    ngOnInit(): void {
-        /* ***********************************************************
-        * Use the "ngOnInit" handler to initialize data for this component.
-        *************************************************************/
-    }
+  public onLoginWithFacebookButtonTap(): void {
+    firebase
+      .login({
+        type: firebase.LoginType.FACEBOOK,
+        facebookOptions: {
+          scope: ["public_profile", "email", "user_about_me"]
+        }
+      })
+      .then(
+        function(result) {
+          this.mapUser(firebase.LoginType.FACEBOOK.toString, result);
+        },
+        function(errorMessage) {
+          console.log(errorMessage);
+        }
+      );
+  }
 
-    onLoginWithSocialProviderButtonTap(): void {
-        /* ***********************************************************
-        * For log in with social provider you can add your custom logic or
-        * use NativeScript plugin for log in with Facebook
-        * http://market.nativescript.org/plugins/nativescript-facebook
-        *************************************************************/
-    }
+  public onLoginWithGoogleButtonTap(): void {
+    firebase
+      .login({
+        type: firebase.LoginType.GOOGLE
+      })
+      .then(
+        function(result) {
+          this.mapUser(firebase.LoginType.GOOGLE.toString, result);
+        },
+        function(errorMessage) {
+          console.log(errorMessage);
+        }
+      );
+  }
 
-    onSigninButtonTap(): void {
-        const email = this.email;
-        const password = this.password;
+  public onSigninButtonTap(): void {
+    const email = this.email;
+    const password = this.password;
+    this.user = this.loginService.findByEmailAndPassword(password, email);
+  }
 
-        /* ***********************************************************
-        * Call your custom sign in logic using the email and password data.
-        *************************************************************/
-    }
+  public onForgotPasswordTap(): void {}
 
-    onForgotPasswordTap(): void {
-        /* ***********************************************************
-        * Call your Forgot Password logic here.
-        *************************************************************/
-    }
+  public onRegisterButtonTap(): void {}
+
+  private mapUser(authenticationType: string, socialUser: any): void {
+    this.user = new User(authenticationType);
+    this.user.externalId = socialUser.uid;
+    this.user.email = socialUser.email;
+    this.user.name = socialUser.name;
+  }
 }
