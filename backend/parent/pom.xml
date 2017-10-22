@@ -19,6 +19,7 @@
 
 	<modules>
 		<module>../account-service</module>
+		<module>../debit-service</module>
 		<module>../core</module>
 	</modules>
 
